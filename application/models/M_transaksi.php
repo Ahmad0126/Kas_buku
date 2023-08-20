@@ -42,6 +42,53 @@ class M_transaksi extends CI_Model{
         $data['saldo'] = $this->get_saldo();
         return $data;
     }
+    public function get_laporan_pp($select){
+        $where = array();
+        $like = array();
+        $data = array();
+        $tanggal = '';
+        $user = 'semua user';
+        if($this->input->post('tanggal1') != null || $this->input->post('tanggal2') != null || $this->input->post('user') != null){
+            if($this->input->post('tanggal1') != null && $this->input->post('tanggal2') != null){
+                $where += array(
+                    'tanggal >=' => $this->input->post('tanggal1'),
+                    'tanggal <=' => $this->input->post('tanggal2')
+                );
+                $tanggal = 'Dari tanggal '.$this->input->post('tanggal1').' sampai '.$this->input->post('tanggal2');
+            }
+            if($this->input->post('user') != null){
+                $this->db->like('username', $this->input->post('user'));
+                $user = 'user '.$this->input->post('user');
+            }
+        }
+        if($select == 'pm'){
+            $where += array('jenis_transaksi' => 'masuk');
+            $this->db->where($where);
+            $data = array(
+                'title' => 'Laporan Pemasukan '.$user,
+                'subtitle' => $tanggal,
+                'duit' => $this->db->get($this->table1)->result_array()
+            );
+            return $data;
+        }else if($select == 'pn'){
+            $where += array('jenis_transaksi' => 'keluar');
+            $this->db->where($where);
+            $data = array(
+                'title' => 'Laporan Pengeluaran '.$user,
+                'subtitle' => $tanggal,
+                'duit' => $this->db->get($this->table1)->result_array()
+            );
+            return $data;
+        }else if($select == 'pp'){
+            $this->db->where($where);
+            $data = array(
+                'title' => 'Laporan Pemasukan dan Pengeluaran '.$user,
+                'subtitle' => $tanggal,
+                'duit' => $this->db->get($this->table1)->result_array()
+            );
+            return $data;
+        }
+    }
     public function get_transaksi($jenis){
         $this->db->order_by('tanggal', 'DESC');
         return $this->db->get_where($this->table1, array('jenis_transaksi' => $jenis))->result();

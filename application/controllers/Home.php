@@ -44,4 +44,36 @@ class Home extends CI_Controller {
 	public function err(){
 		$this->template->load('layout/template1', 'errors/html/err_404', 'Halaman tidak ditemukan');
 	}
+    public function laporan(){
+        $this->load->library('fpdf');
+        $this->load->model('M_transaksi');
+        $select = $this->input->post('pp');
+        $data = $this->M_transaksi->get_laporan_pp($select);
+        $no = 1;
+        $this->fpdf->AddPage();
+        $this->fpdf->SetFont('Arial', 'B', 16);
+        $this->fpdf->Cell(190, 7, $data['title'], 0, 1, 'C');
+        if($data['subtitle'] != ''){
+            $this->fpdf->SetFont('Arial', 'B', 12);
+            $this->fpdf->Cell(190, 7, $data['subtitle'], 0, 1, 'C');
+        }
+        $this->fpdf->Cell(190, 7, '', 0, 1);
+        //title <th>
+        $this->fpdf->SetFont('Arial', 'B', 10);
+        $this->fpdf->Cell(7, 6, 'No', 1, 0);
+        $this->fpdf->Cell(30, 6, 'Tanggal', 1, 0);
+        $this->fpdf->Cell(80, 6, 'Keterangan', 1, 0);
+        $this->fpdf->Cell(30, 6, 'Username', 1, 0);
+        $this->fpdf->Cell(40, 6, 'Nominal', 1, 1);
+
+        $this->fpdf->SetFont('Arial', '', 10);
+        foreach($data['duit'] as $fer){
+            $this->fpdf->Cell(7, 6, $no++ , 1, 0);
+            $this->fpdf->Cell(30, 6, $fer['tanggal'], 1, 0);
+            $this->fpdf->Cell(80, 6, $fer['keterangan'], 1, 0);
+            $this->fpdf->Cell(30, 6, $fer['username'], 1, 0);
+            $this->fpdf->Cell(40, 6, 'Rp '.number_format($fer['nominal']), 1, 1);
+        }
+        $this->fpdf->Output();
+    }
 }
