@@ -80,13 +80,20 @@ class Home extends CI_Controller {
 
         $this->fpdf->SetFont('Arial', '', 10);
         $no = 1;
+        $total = 0;
         foreach($data['duit'] as $fer){
             $this->fpdf->Cell(7, 6, $no++ , 1, 0);
             $this->fpdf->Cell(25, 6, $fer['tanggal'], 1, 0);
             $this->fpdf->Cell(85, 6, $fer['keterangan'], 1, 0);
             $this->fpdf->Cell(30, 6, $fer['username'], 1, 0);
             $this->fpdf->Cell(35, 6, 'Rp '.number_format($fer['nominal']), 1, 1);
+            $total += $fer['nominal'];
         }
+
+        $this->fpdf->SetFont('Arial', 'B', 10);
+        $this->fpdf->Cell(147, 6, 'Total Keseluruhan', 1, 0);
+        $this->fpdf->Cell(35, 6, 'Rp '.number_format($total), 1, 1);
+
         $this->fpdf->Output();
     }
     private function buat_pp_all($data){
