@@ -35,10 +35,10 @@ class M_transaksi extends CI_Model{
         $data = array();
         $data['pn_hari'] = $this->get_total_pp_by_tanggal('keluar', date('Y-m-d'));
         $data['pn_bulan'] = $this->get_total_pp_by_tanggal('keluar', date('Y-m'));
-        $data['pn_total'] = $this->get_total_pp('keluar');
+        $data['pn_total'] = $this->get_total_pp(array('jenis_transaksi' => 'keluar'));
         $data['pm_hari'] = $this->get_total_pp_by_tanggal('masuk', date('Y-m-d'));
         $data['pm_bulan'] = $this->get_total_pp_by_tanggal('masuk', date('Y-m'));
-        $data['pm_total'] = $this->get_total_pp('masuk');
+        $data['pm_total'] = $this->get_total_pp(array('jenis_transaksi' => 'masuk'));
         $data['saldo'] = $this->get_saldo();
         return $data;
     }
@@ -47,47 +47,64 @@ class M_transaksi extends CI_Model{
         $like = array();
         $data = array();
         $tanggal = '';
+        $saldo = array();
         $user = 'semua user';
-        if($this->input->post('tanggal1') != null || $this->input->post('tanggal2') != null || $this->input->post('user') != null){
+        $t1 = '';
+        $t2 = '';
+        $u1 = '';
+        
             if($this->input->post('tanggal1') != null && $this->input->post('tanggal2') != null){
                 $where += array(
                     'tanggal >=' => $this->input->post('tanggal1'),
                     'tanggal <=' => $this->input->post('tanggal2')
                 );
                 $tanggal = 'Dari tanggal '.$this->input->post('tanggal1').' sampai '.$this->input->post('tanggal2');
+                $t1 = $this->input->post('tanggal1');
+                $t2 = $this->input->post('tanggal2');
             }
-            if($this->input->post('user') != null){
+            if($this->input->post('user') != 'semua'){
                 $this->db->like('username', $this->input->post('user'));
                 $user = 'user '.$this->input->post('user');
+                $u1 = $this->input->post('user');
             }
-        }
+        
         if($select == 'pm'){
             $where += array('jenis_transaksi' => 'masuk');
-            $this->db->where($where);
             $data = array(
                 'title' => 'Laporan Pemasukan '.$user,
-                'subtitle' => $tanggal,
-                'duit' => $this->db->get($this->table1)->result_array()
+                'jenis' => 'masuk'
             );
-            return $data;
         }else if($select == 'pn'){
             $where += array('jenis_transaksi' => 'keluar');
-            $this->db->where($where);
             $data = array(
                 'title' => 'Laporan Pengeluaran '.$user,
-                'subtitle' => $tanggal,
-                'duit' => $this->db->get($this->table1)->result_array()
+                'jenis' => 'keluar'
             );
-            return $data;
         }else if($select == 'pp'){
-            $this->db->where($where);
+            $saldo = $this->get_array_saldo($t1, $t2, $u1);
+            if($this->input->post('user') != 'semua'){
+                $where += array('username' => $u1);
+            }
+            $subtt = '';
+            if($t1 != ''){
+                $subtt = 'Saldo sebelum tanggal '.$t1;
+            }
+            $totalpm = $this->get_total_pp($where + array('jenis_transaksi' => 'masuk'));
+            $totalpn = $this->get_total_pp($where + array('jenis_transaksi' => 'keluar'));
+            // var_dump($totalpm, $totalpn); die;
             $data = array(
                 'title' => 'Laporan Pemasukan dan Pengeluaran '.$user,
-                'subtitle' => $tanggal,
-                'duit' => $this->db->get($this->table1)->result_array()
+                'jenis' => 'pp',
+                'saldos' => $saldo,
+                'total_pm' => $totalpm,
+                'total_pn' => $totalpn,
+                'subsubtitle' => $subtt
             );
-            return $data;
         }
+        $this->db->where($where);
+        $data += array('duit' => $this->db->get($this->table1)->result_array(), 'subtitle' => $tanggal);
+        // var_dump($data); die;
+        return $data;
     }
     public function get_transaksi($jenis){
         $this->db->order_by('tanggal', 'DESC');
@@ -109,10 +126,10 @@ class M_transaksi extends CI_Model{
         }
         return $total;
     }
-    private function get_total_pp($field){
+    private function get_total_pp(array $field){
         $this->db->select('nominal');
         $this->db->from($this->table1);
-        $this->db->where('jenis_transaksi', $field);
+        $this->db->where($field);
         $list = $this->db->get()->result_array();
         $total = 0;
         foreach($list as $fer){
@@ -131,6 +148,49 @@ class M_transaksi extends CI_Model{
             }
         }
         return $saldo;
+    }
+	public function get_array_saldo($tanggal1 = '', $tanggal2 = '', $user = ''){
+		$hasil = array(); //saldobefore, saldo, total_masuk, total_keluar
+        $saldobefore = 0;
+        $where1 = array();
+        $where2 = array();
+        $saldo = array();
+        if($user != ''){
+            $where1 += array('username' => $user);
+            $where2 += array('username' => $user);
+        }
+        if($tanggal1 != ''){
+            $where1 += array('tanggal <' => $tanggal1);
+            $this->db->select('nominal, id_transaksi, jenis_transaksi');
+			$this->db->order_by('tanggal', 'ASC');
+			$this->db->where($where1);
+			$list = $this->db->get($this->table1)->result_array();
+			foreach($list as $fer){
+				if($fer['jenis_transaksi'] == 'keluar'){
+					$saldobefore -= $fer['nominal'];
+				}else{
+					$saldobefore += $fer['nominal'];
+				}
+			}
+        }
+        $hasil += array('saldobefore' => $saldobefore);
+        if($tanggal2 != ''){
+            $where2 += array('tanggal >=' => $tanggal1, 'tanggal <=' => $tanggal2);
+        }
+        		
+        $this->db->select('nominal, jenis_transaksi');
+        $this->db->order_by('tanggal', 'ASC');
+        $this->db->where($where2);
+        $list = $this->db->get($this->table1)->result_array();
+        foreach($list as $fer){
+            if($fer['jenis_transaksi'] == 'keluar'){
+                array_push($saldo, $saldobefore -= $fer['nominal']);
+            }else{
+                array_push($saldo, $saldobefore += $fer['nominal']);
+            }
+        }
+        $hasil += array('saldo' => $saldo);
+        return $hasil;
     }
     function get_tahun_awal(){
         $this->db->select('tanggal');

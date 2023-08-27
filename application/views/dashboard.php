@@ -96,8 +96,13 @@
 						<label for="floatingSelect">Tanggal Akhir</label>
 					</div>
                     <div class="form-floating mb-3">
-                        <input type="text" name="user" id="floatingInput" class="form-control" placeholder="Username">
-                        <label for="floatingInput">Username</label>
+                        <select name="user" class="form-control" id="">
+                            <option value="semua">Semua User</option>
+                            <?php foreach($user as $fer){ ?>
+                                <option value="<?= $fer->username ?>"><?= $fer->nama ?></option>
+                            <?php } ?>
+                        </select>
+                    <label for="floatingInput">Username</label>
                     </div>
 				</div>
 				<div class="modal-footer">
