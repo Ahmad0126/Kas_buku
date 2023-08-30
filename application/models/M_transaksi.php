@@ -102,6 +102,7 @@ class M_transaksi extends CI_Model{
             );
         }
         $this->db->where($where);
+        $this->db->order_by('tanggal', 'ASC');
         $data += array('duit' => $this->db->get($this->table1)->result_array(), 'subtitle' => $tanggal);
         // var_dump($data); die;
         return $data;
