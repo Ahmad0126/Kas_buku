@@ -115,16 +115,14 @@ class M_transaksi extends CI_Model{
         return $this->db->get($this->table1)->result_array();
     }
     private function get_total_pp_by_tanggal($field, $tanggal){
-        $this->db->select('nominal');
+        $this->db->select('sum(nominal) as total');
         $this->db->from($this->table1);
         $this->db->where('jenis_transaksi', $field);
         $this->db->like('tanggal', $tanggal);
-        $list = $this->db->get()->result_array();
-        $total = 0;
-        foreach($list as $fer){
-            $total += $fer['nominal'];
-        }
-        return $total;
+        $list = $this->db->get()->row_array();
+        if($list['total'] == null){
+            return 0;
+        }else{ return $list['total']; }
     }
     private function get_total_pp(array $field){
         $this->db->select('nominal');
