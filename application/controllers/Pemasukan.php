@@ -10,8 +10,7 @@ class Pemasukan extends CI_Controller {
     private function buat_notif($message, $warna){
 		return '
 		<div class="alert alert-'.$warna.' alert-dismissable fade show" role="alert">
-			<i class="fa fa-exclamation-circle me-2"></i>'.$message.'
-			<button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+			<i class="mdi mdi-exclamation"></i>'.$message.'
 		</div>';
 	}
 

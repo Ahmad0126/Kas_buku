@@ -6,7 +6,7 @@
 	<div class="bg-light text-center rounded p-4">
 		<div class="d-flex align-items-center justify-content-between mb-4">
 			<h4 class="mb-0">Daftar Pengeluaran</h4>
-			<button data-bs-toggle="modal" type="button" data-bs-target="#tambahModal" class="btn btn-primary">Tambah</button>
+			<button data-toggle="modal" type="button" data-target="#tambahModal" class="btn btn-primary">Tambah</button>
 		</div>
 		<div class="table-responsive">
 			<table class="table text-start align-middle table-bordered table-hover mb-0">
@@ -52,25 +52,25 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title" id="exampleModalLabel">Tambah Pengeluaran</h5>
-				<button class="btn-close" type="button" aria-label="Close" data-bs-dismiss="modal" aria-label="Close"></button>
+				<button class="btn btn-outline-secondary btn-rounded btn-icon" type="button" aria-label="Close" data-dismiss="modal" aria-label="Close"><i class="mdi mdi-close"></i></button>
 			</div>
 			<form action="<?= base_url('pengeluaran/simpan')?>" method="post">
 				<div class="modal-body">
-					<div class="form-floating mb-3">
-						<textarea name="keterangan" class="form-control" placeholder="Keterangan" id="floatingInput"></textarea>
+					<div class="form-group mb-3">
 						<label for="floatingInput">Keterangan</label>
+						<textarea name="keterangan" class="form-control" placeholder="Keterangan" id="floatingInput"></textarea>
 					</div>
-					<div class="form-floating mb-3">
-						<input type="number" name="nominal" class="form-control" placeholder="Nominal" id="floatingPassword">
+					<div class="form-group mb-3">
 						<label for="floatingPassword">Nominal</label>
+						<input type="number" name="nominal" class="form-control" placeholder="Nominal" id="floatingPassword">
 					</div>
-					<div class="form-floating mb-3">
-						<input type="date" name="tanggal" class="form-control" placeholder="Tanggal" id="floatingSelect">
+					<div class="form-group mb-3">
 						<label for="floatingSelect">Tanggal</label>
+						<input type="date" name="tanggal" class="form-control" placeholder="Tanggal" id="floatingSelect">
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Batal</button>
+					<button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
 					<button type="submit" class="btn btn-primary m-2">Simpan</button>
 				</div>
 			</form>

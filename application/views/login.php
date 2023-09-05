@@ -1,32 +1,32 @@
-<!-- Sign In Start -->
-<div class="container-fluid">
-	<div class="row h-100 align-items-center justify-content-center" style="min-height: 100vh;">
-		<div class="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4">
+<div class="container-fluid page-body-wrapper full-page-wrapper">
+	<div class="content-wrapper align-items-center auth px-0">
+		<div class="row w-100 mx-0">
 			<div class="notif"><?= $this->session->flashdata('alert') ?></div>
-			<div class="bg-light rounded p-4 p-sm-5 my-4 mx-3">
-				<form action="<?= base_url('home/log_in') ?>" method="post">
-					<div class="d-flex align-items-center justify-content-between mb-3">
-						<a href="<?= base_url() ?>" class="">
-							<h3 class="text-primary"><i class="fa fa-hashtag me-2"></i>KAS BUKU</h3>
-						</a>
-						<h3>Log In</h3>
+			<div class="col-lg-4 mx-auto">
+				<div class="auth-form-light text-left py-5 px-4 px-sm-5">
+					<div class="brand-logo">
+						<img src="<?= base_url('assets/skydash/') ?>images/logo.svg" alt="logo">
 					</div>
-					<div class="form-floating mb-3">
-						<input name="username" type="text" class="form-control <?= $this->session->flashdata('username') != null?'is-invalid':'' ?>" id="floatingInput"
-							placeholder="Masukkan Username" value="<?= $this->session->flashdata('username_val') ?>">
-						<label for="floatingInput">Username</label>
-                        <div class="invalid-feedback"><?= $this->session->flashdata('username') ?></div>
-					</div>
-					<div class="form-floating mb-4">
-						<input name="password" type="password" class="form-control <?= $this->session->flashdata('password') != null?'is-invalid':'' ?>" id="floatingPassword"
-							placeholder="Masukkan Password">
-						<label for="floatingPassword">Password</label>
-                        <div class="invalid-feedback"><?= $this->session->flashdata('password') ?></div>
-					</div>
-					<button type="submit" class="btn btn-primary py-3 w-100 mb-4">Log In</button>
-				</form>
+					<h4>KAS BUKU</h4>
+					<h6 class="font-weight-light">Silahkan login</h6>
+					<form action="<?= base_url('home/log_in') ?>" method="post" class="pt-3">
+						<div class="form-group">
+							<input type="text" name="username" class="form-control form-control-lg <?= $this->session->flashdata('username') != null?'is-invalid':'' ?>" value="<?= $this->session->flashdata('username_val') != null? $this->session->flashdata('username_val') : '' ?>" id="exampleInputEmail1"
+								placeholder="Username">
+							<div class="invalid-feedback"><?= $this->session->flashdata('username') ?></div>
+						</div>
+						<div class="form-group">
+							<input type="password" name="password" class="form-control form-control-lg <?= $this->session->flashdata('password') != null?'is-invalid':'' ?>"
+								id="exampleInputPassword1" placeholder="Password">
+							<div class="invalid-feedback"><?= $this->session->flashdata('password') ?></div>
+						</div>
+						<div class="mt-3">
+							<button type="submit" class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn">Log In</button>
+						</div>
+					</form>
+				</div>
 			</div>
 		</div>
 	</div>
+	<!-- content-wrapper ends -->
 </div>
-<!-- Sign In End -->

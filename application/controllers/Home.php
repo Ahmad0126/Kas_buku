@@ -46,10 +46,6 @@ class Home extends CI_Controller {
 	public function err(){
 		$this->template->load('layout/template1', 'errors/html/err_404', 'Halaman tidak ditemukan');
 	}
-    public function tes_model(){
-        $this->load->model('M_transaksi');
-        $this->M_transaksi->get_array_saldo();
-    }
     public function laporan(){
         $this->load->model('M_transaksi');
         $select = $this->input->post('pp');
