@@ -20,8 +20,8 @@
 			</a>
 		</li>
 		<?php if($this->session->userdata('level')=='admin'){ ?>
-		<li class="nav-item <?= $menu == 'user'? 'active' : '' ?>" href="<?= base_url('user') ?>">
-			<a class="nav-link">
+		<li class="nav-item <?= $menu == 'user'? 'active' : '' ?>">
+			<a class="nav-link" href="<?= base_url('user') ?>">
 				<i class="icon-head menu-icon"></i>
 				<span class="menu-title">User</span>
 			</a>

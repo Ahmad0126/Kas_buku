@@ -22,7 +22,7 @@ class M_user extends CI_Model{
         [
             'field' => 'level',
             'label' => 'Level',
-            'rules' => 'required|in_list[admin,siswa]'
+            'rules' => 'required|in_list[admin,user]'
         ]
     ];
     protected $rules2 = [
@@ -34,7 +34,7 @@ class M_user extends CI_Model{
         [
             'field' => 'level',
             'label' => 'Level',
-            'rules' => 'required|in_list[admin,siswa]'
+            'rules' => 'required|in_list[admin,user]'
         ]
     ];
     protected $default_rules;
