@@ -10,7 +10,8 @@
 		</button>
 		<ul class="navbar-nav navbar-nav-right">
 			<li class="nav-item nav-profile dropdown">
-				<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
+				<a class="d-flex nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
+					<p style="margin-top: 0.5rem; margin-right: 1rem;"><?= $this->session->userdata('nama'); ?></p>
 					<img src="<?= base_url('assets/skydash/') ?>images/faces/face28.jpg" alt="profile" />
 				</a>
 				<div class="dropdown-menu dropdown-menu-right navbar-dropdown"

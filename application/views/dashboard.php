@@ -75,7 +75,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title" id="exampleModalLabel">Buat Laporan</h5>
-				<button class="btn btn-outline-secondary btn-rounded btn-icon" type="button" data-dismiss="modal" aria-label="Close"><i class="mdi mdi-close"></i></button>
+				<button class="btn-close" type="button" data-dismiss="modal" aria-label="Close"><i class="settings-close ti-close"></i></button>
 			</div>
 			<form action="<?= base_url('home/laporan')?>" method="post">
 				<div class="modal-body">

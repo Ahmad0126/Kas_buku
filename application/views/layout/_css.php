@@ -11,5 +11,11 @@
 <!-- End plugin css for this page -->
 <!-- inject:css -->
 <link rel="stylesheet" href="<?= base_url('assets/skydash/') ?>css/vertical-layout-light/style.css">
+<style>
+    .btn-close{
+        border: none;
+        background: transparent;
+    }
+</style>
 <!-- endinject -->
 <link rel="shortcut icon" href="<?= base_url('assets/skydash/') ?>images/favicon.png" />

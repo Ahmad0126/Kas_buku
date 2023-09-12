@@ -13,4 +13,11 @@ class Template{
         $this->set('title', $title);
         return $this->CI->load->view($template, $this->template_data, $return);
     }
+
+    function notif($message, $warna){
+        return '
+		<div class="alert alert-'.$warna.' alert-dismissable fade show" role="alert">
+			<i class="mdi mdi-exclamation"></i>'.$message.'
+		</div>';
+    }
 }
