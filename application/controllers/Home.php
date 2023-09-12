@@ -2,10 +2,13 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Home extends CI_Controller {
+    public function __construct(){
+        parent::__construct();
+        $this->load->model('M_user');
+    }
 	public function index(){
 		if(!$this->session->userdata('id')){ redirect(base_url('login')); }
         $this->load->model('M_transaksi');
-        $this->load->model('M_user');
         $data['user'] = $this->M_user->get_user();
         $data['info'] = $this->M_transaksi->get_info();
 		$this->template->load('layout/template', 'dashboard', 'Dashboard', $data);
@@ -13,9 +16,47 @@ class Home extends CI_Controller {
 	public function login(){
 		$this->template->load('layout/template1', 'login', 'Login');
 	}
+    public function profil(){
+        $data['user'] = $this->M_user->get_user_by_id($this->session->userdata('id'));
+        $this->template->load('layout/template', 'profil', 'Profil', $data);
+    }
 
+    public function update_user($id){
+        $this->M_user->update_data(array('nama' => $this->input->post('nama')), $id);
+        $this->session->set_userdata('nama', $this->input->post('nama'));
+        $this->session->set_flashdata('oop', $this->template->notif('Profil berhasil diubah!', 'success'));
+        redirect(base_url());
+    }
+    public function update_pass($id){
+        $pass = $this->input->post('password');
+        $pl = $this->input->post('pl');
+        $pk = $this->input->post('pk');
+		$cek = $this->M_user->getwu_user($this->session->userdata('username'));
+        if($cek){
+            if(md5($pl) == $cek['password']){
+                if($pass == $pk){
+                    $this->M_user->update_data(array('password' => md5($pass)), $id);
+                    $user = array('level', 'id', 'nama', 'username');
+                    $this->session->unset_userdata($user);
+                    $this->session->set_flashdata('oop', $this->template->notif('Password berhasil diubah!', 'success'));
+                    redirect(base_url('login'));
+                }else{
+                    $this->session->set_flashdata('pl_val', $pl);
+                    $this->session->set_flashdata('pp_val', $pass);
+                    $this->session->set_flashdata('pk_val', $pk);
+                    $this->session->set_flashdata('konf', 'Password Tidak Sama!');
+                    redirect(base_url('home/profil'));
+                }
+            }else{
+                $this->session->set_flashdata('pl_val', $pl);
+                $this->session->set_flashdata('pp_val', $pass);
+                $this->session->set_flashdata('pk_val', $pk);
+                $this->session->set_flashdata('password', 'Password Salah!');
+                redirect(base_url('home/profil'));
+            }
+        }
+    }
 	public function log_in(){
-		$this->load->model('M_user');
         $user = $this->input->post('username');
         $pass = $this->input->post('password');
 		$cek = $this->M_user->getwu_user($user);
@@ -38,7 +79,7 @@ class Home extends CI_Controller {
         }
 	}
 	public function log_out(){
-        $user = array('level', 'id', 'nama');
+        $user = array('level', 'id', 'nama', 'username');
         $this->session->unset_userdata($user);
         $this->session->sess_destroy();
         redirect(base_url('login'));

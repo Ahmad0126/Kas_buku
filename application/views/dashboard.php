@@ -1,4 +1,7 @@
 <!-- Sign In Start -->
+<div class="container-fluid pt-4 px-4 notifikasi">
+	<?= $this->session->flashdata('alert'); ?>
+</div>
 <div class="container-fluid pt-4 px-4">
     <h2 class="text-center">Pemasukan</h2>
     <div class="row g-4 mb-2">

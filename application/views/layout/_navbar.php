@@ -16,9 +16,9 @@
 				</a>
 				<div class="dropdown-menu dropdown-menu-right navbar-dropdown"
 					aria-labelledby="profileDropdown">
-					<a class="dropdown-item">
+					<a class="dropdown-item" href="<?= base_url('home/profil') ?>">
 						<i class="ti-settings text-primary"></i>
-						Settings
+						Profil
 					</a>
 					<a class="dropdown-item" href="<?= base_url('logout') ?>">
 						<i class="ti-power-off text-primary"></i>

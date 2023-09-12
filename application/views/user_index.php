@@ -30,8 +30,10 @@
 						<td><?= $fer->nama ?></td>
 						<td><?= $fer->level ?></td>
 						<td>
+							<?php if($fer->id_user == $this->session->userdata('id')){ echo "Tidak Ada"; }else{ ?>
 							<a class="btn btn-sm btn-primary" href="<?= base_url('user/edit/').$fer->id_user ?>">Edit</a>
 							<a class="btn btn-sm btn-danger" onclick="return confirm('Yakin ingin menghapus user ini?')" href="<?= base_url('user/hapus_user/').$fer->id_user ?>">Hapus <i class="fa fa-trash"></i></a>
+							<?php } ?>
 						</td>
 					</tr>
 					<?php endforeach ?>

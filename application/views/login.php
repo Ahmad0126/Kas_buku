@@ -1,14 +1,14 @@
 <div class="container-fluid page-body-wrapper full-page-wrapper">
 	<div class="content-wrapper align-items-center auth px-0">
 		<div class="row w-100 mx-0">
-			<div class="notif"><?= $this->session->flashdata('alert') ?></div>
 			<div class="col-lg-4 mx-auto">
 				<div class="auth-form-light text-left py-5 px-4 px-sm-5">
 					<div class="brand-logo">
 						<img src="<?= base_url('assets/skydash/') ?>images/logo.svg" alt="logo">
 					</div>
+					<div class="notifikasi"><?= $this->session->flashdata('oop') ?></div>
 					<h4>KAS BUKU</h4>
-					<h6 class="font-weight-light">Silahkan login</h6>
+					<h6 class="font-weight-light">Silahkan login<?= $this->session->flashdata('oop') <> null ? ' menggunakan password baru' : '' ?></h6>
 					<form action="<?= base_url('home/log_in') ?>" method="post" class="pt-3">
 						<div class="form-group">
 							<input type="text" name="username" class="form-control form-control-lg <?= $this->session->flashdata('username') != null?'is-invalid':'' ?>" value="<?= $this->session->flashdata('username_val') != null? $this->session->flashdata('username_val') : '' ?>" id="exampleInputEmail1"
